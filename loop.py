@@ -43,10 +43,13 @@ def check_messages_loop():
     """Constantly checks for new messages for the telegram bot."""
     last_update_id = None
     while True:
-        updates = get_updates(last_update_id)
-        if len(updates["result"]) > 0:
-            last_update_id = get_last_update_id(updates) + 1
-            for update in updates["result"]:
-                echo(update["message"]["text"], update["message"]["chat"]["id"])
-        time.sleep(0.5)
+        try:
+            updates = get_updates(last_update_id)
+            if len(updates["result"]) > 0:
+                last_update_id = get_last_update_id(updates) + 1
+                for update in updates["result"]:
+                    echo(update["message"]["text"], update["message"]["chat"]["id"])
+            time.sleep(0.5)
+        except Exception as e:
+            print(e)
 check_messages_loop()
